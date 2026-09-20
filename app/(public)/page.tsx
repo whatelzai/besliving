@@ -1,109 +1,37 @@
+import Image from "next/image";
 import Link from "next/link";
+import { ArrowUpRight, Box, Heart, House } from "lucide-react";
+import { HouseCard } from "@/components/HouseCard";
+import { u1Photos } from "@/lib/catalogue/desa-aman";
 
 export default function Home() {
   return (
-    <main>
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#a7f3ec]/40 via-[#e9e3f5]/50 to-[#fef3c7]/60">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%232ec4b6\' fill-opacity=\'0.08\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50" />
-        <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-[#1f2937] sm:text-5xl md:text-6xl">
-              Co-living that{" "}
-              <span className="text-[#2ec4b6]">feels like home</span>
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-[#6b7280]">
-              Find your perfect space, connect with like-minded people, and move
-              in seamlessly. BesLiving makes renting simple, social, and
-              stress-free.
-            </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href="/catalogue"
-                className="w-full rounded-xl bg-[#2ec4b6] px-8 py-4 text-center font-semibold text-white shadow-lg shadow-[#2ec4b6]/25 transition-all hover:bg-[#1a9b8f] hover:shadow-xl hover:shadow-[#2ec4b6]/30 sm:w-auto"
-              >
-                Browse Spaces
-              </Link>
-              <Link
-                href="/auth"
-                className="w-full rounded-xl border-2 border-[#b19cd9] bg-white/80 px-8 py-4 text-center font-semibold text-[#8b6cb8] backdrop-blur transition-all hover:bg-[#e9e3f5] sm:w-auto"
-              >
-                Create Account
-              </Link>
-            </div>
-          </div>
+    <main className="living-page">
+      <section className="home-hero living-container">
+        <div className="hero-copy">
+          <span className="eyebrow"><span className="status-dot" /> SMALL COMMUNITY. MORE HOME.</span>
+          <h1>Your own space.<br /><em>A place to belong.</em></h1>
+          <p>Thoughtfully furnished rooms in a family-run home. A little more comfort, a little more care. Welcome to BesLiving.</p>
+          <Link className="living-button" href="/catalogue">Find your room <ArrowUpRight size={18} /></Link>
+          <div className="hero-footnote"><House size={18} aria-hidden="true" /><span>One home in Desa Aman.<br /><strong>Six rooms. A personal touch.</strong></span></div>
+        </div>
+        <div className="hero-photo">
+          <Image src={u1Photos[0].src} alt={u1Photos[0].alt} fill priority sizes="(max-width: 760px) 100vw, 55vw" className="object-cover" />
+          <div className="hero-photo-caption"><span>MEET YOUR NEXT SPACE<strong>U1 · Desa Aman</strong></span><Link href="/units/desa-aman/rooms/u1" aria-label="Explore room U1 in 3D"><ArrowUpRight size={26} /></Link></div>
+          <span className="hero-stamp"><Box size={17} aria-hidden="true" /> Explore U1 in 3D</span>
         </div>
       </section>
-
-      <section className="border-y border-[#e9e3f5]/60 bg-white py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            {[
-              { value: "500+", label: "Happy residents" },
-              { value: "50+", label: "Premium units" },
-              { value: "24hr", label: "Move-in support" },
-              { value: "98%", label: "Satisfaction rate" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-2xl font-bold text-[#2ec4b6] sm:text-3xl">
-                  {stat.value}
-                </div>
-                <div className="mt-1 text-sm text-[#6b7280]">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="home-values"><span><Heart size={17} /> Family owned & managed</span><span><House size={17} /> A room of your own</span><span><Box size={17} /> Get a feel for the space</span></div>
+      <section className="living-container home-houses">
+        <div className="section-heading"><div><span className="eyebrow">FIND YOUR PLACE</span><h2>Good living starts at home.</h2></div><Link className="text-link" href="/catalogue">Our homes <ArrowUpRight size={18} /></Link></div>
+        <HouseCard />
       </section>
-
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-bold text-[#1f2937] sm:text-4xl">
-            Why choose <span className="text-[#2ec4b6]">BesLiving</span>?
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-[#6b7280]">
-            We&apos;ve reimagined co-living to put community and convenience
-            first.
-          </p>
-          <div className="mt-16 grid gap-8 md:grid-cols-3">
-            {[
-              { icon: "🏠", title: "Move in hassle-free", desc: "Furnished rooms, utilities included. Just bring your suitcase and start your new chapter.", color: "yellow" },
-              { icon: "🤝", title: "Built-in community", desc: "Events, shared spaces, and housemate matching so you connect with people who get you.", color: "turquoise" },
-              { icon: "✨", title: "Curated quality", desc: "Every property is vetted for safety, comfort, and character. No surprises.", color: "purple" },
-            ].map((item, i) => (
-              <div key={i} className="rounded-2xl border border-[#e9e3f5]/80 bg-white p-8 shadow-sm hover:shadow-md hover:shadow-[#b19cd9]/10">
-                <div className={`inline-flex size-14 items-center justify-center rounded-xl text-2xl ${item.color === "yellow" ? "bg-[#fef3c7]" : item.color === "turquoise" ? "bg-[#a7f3ec]" : "bg-[#e9e3f5]"}`}>
-                  {item.icon}
-                </div>
-                <h3 className="mt-4 text-xl font-semibold text-[#1f2937]">{item.title}</h3>
-                <p className="mt-2 text-[#6b7280]">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gradient-to-r from-[#2ec4b6] to-[#b19cd9] py-20">
-        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">Ready to find your space?</h2>
-          <p className="mt-4 text-lg text-white/90">Join hundreds of residents who&apos;ve made BesLiving their home.</p>
-          <Link href="/catalogue" className="mt-8 inline-block rounded-xl bg-white px-8 py-4 font-semibold text-[#2ec4b6] shadow-lg transition-all hover:bg-[#fef3c7] hover:text-[#d4a017]">
-            Explore Units
-          </Link>
-        </div>
-      </section>
-
-      <footer className="border-t border-[#e9e3f5] bg-white py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <span className="text-lg font-semibold text-[#2ec4b6]">BesLiving</span>
-            <div className="flex gap-8 text-sm text-[#6b7280]">
-              <Link href="/catalogue" className="hover:text-[#2ec4b6]">Catalogue</Link>
-              <Link href="/about" className="hover:text-[#2ec4b6]">About</Link>
-              <Link href="/contact" className="hover:text-[#2ec4b6]">Contact</Link>
-            </div>
-          </div>
-          <p className="mt-8 text-center text-sm text-[#6b7280]">© {new Date().getFullYear()} BesLiving. Co-living made simple.</p>
-        </div>
-      </footer>
+      <section className="living-container how-it-works"><span className="eyebrow">MAKE YOURSELF AT HOME</span><h2>A closer look before you move.</h2><div className="steps">{[
+        ["01", "Choose a home", "Start with the house and get to know the place."],
+        ["02", "Explore your room", "Browse the photos and rotate U1’s 3D layout at your own pace."],
+        ["03", "Make it yours", "Confirm rent and availability with our family before arranging your move."],
+      ].map(([n, title, description]) => <article key={n}><span>{n}</span><h3>{title}</h3><p>{description}</p></article>)}</div></section>
+      <footer className="living-footer"><Link href="/">BesLiving<span>Room to be you.</span></Link><p>Family-run co-living · Desa Aman</p><Link href="/about">Our story ↗</Link></footer>
     </main>
   );
 }

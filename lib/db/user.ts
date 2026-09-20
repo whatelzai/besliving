@@ -1,4 +1,4 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 
 export type AppUser = {

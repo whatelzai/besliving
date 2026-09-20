@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DesaAmanHouse } from "@/components/rooms/DesaAmanHouse";
 import { createPublicSupabase } from "@/lib/supabase/server";
 import Image from "next/image";
 
@@ -8,6 +9,7 @@ export default async function UnitDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  if (id === "desa-aman") return <DesaAmanHouse />;
   const supabase = createPublicSupabase();
 
   const { data: unit } = await supabase

@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { DesaAmanRoom } from "@/components/rooms/DesaAmanRoom";
+import { isRentalRoom } from "@/lib/catalogue/desa-aman";
 import Image from "next/image";
 import { createPublicSupabase, createServerSupabase } from "@/lib/supabase/server";
 import { auth } from "@clerk/nextjs/server";
@@ -10,6 +13,10 @@ export default async function RoomDetailPage({
   params: Promise<{ id: string; roomId: string }>;
 }) {
   const { id: unitId, roomId } = await params;
+  if (unitId === "desa-aman") {
+    if (!isRentalRoom(roomId)) notFound();
+    return <DesaAmanRoom name={roomId.toUpperCase()} />;
+  }
   const supabase = createPublicSupabase();
   const { userId } = await auth();
 

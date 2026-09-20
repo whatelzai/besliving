@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { usePersistedCollapse } from "@/lib/hooks/use-persisted-collapse";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -23,20 +23,7 @@ const STORAGE_KEY = "admin-sidebar-collapsed";
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const [collapsed, setCollapsed] = useState(false);
-
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored !== null) setCollapsed(stored === "true");
-  }, []);
-
-  function toggle() {
-    setCollapsed((c) => {
-      const next = !c;
-      localStorage.setItem(STORAGE_KEY, String(next));
-      return next;
-    });
-  }
+  const [collapsed, toggle] = usePersistedCollapse(STORAGE_KEY);
 
   return (
     <aside

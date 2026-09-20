@@ -2,9 +2,6 @@ import { redirect } from "next/navigation";
 import { getAppUser } from "@/lib/db/user";
 import { AdminSidebar } from "@/components/AdminSidebar";
 
-const isLocalEnv =
-  process.env.NEXT_PUBLIC_ENV === "local";
-
 export default async function AdminLayout({
   children,
 }: {
@@ -14,8 +11,7 @@ export default async function AdminLayout({
   if (!user) redirect("/auth");
   const hasAccess =
     user.role === "admin" ||
-    user.role === "superadmin" ||
-    (isLocalEnv && user.role === "user");
+    user.role === "superadmin";
   if (!hasAccess) redirect("/");
   return (
     <div className="flex h-[calc(100vh-4rem)] overflow-hidden">

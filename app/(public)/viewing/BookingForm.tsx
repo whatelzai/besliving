@@ -3,7 +3,7 @@ import { useActionState, useState } from "react";
 import Link from "next/link";
 import { malaysiaDate, slotRange, dayLabel } from "@/lib/viewing-times";
 import { bookViewing } from "./actions";
-type Slot = { id: string; starts_at: string; ends_at: string; host: string };
+type Slot = { id: string; starts_at: string; ends_at: string };
 const time = (d: string) =>
   new Intl.DateTimeFormat("en-MY", {
     timeZone: "Asia/Kuala_Lumpur",
@@ -25,6 +25,11 @@ export function BookingForm({
   const dates = [...new Set(slots.map((s) => malaysiaDate(s.starts_at)))];
   const [day, setDay] = useState(dates[0] || "");
   const daySlots = slots.filter((s) => malaysiaDate(s.starts_at) === day);
+  const hours = [...new Set(daySlots.map((s) => Math.floor(new Date(s.starts_at).getTime() / 3600000)))];
+  const cells = hours.flatMap((hour) => [0, 30].map((minute) => {
+    const start = new Date(hour * 3600000 + minute * 60000).toISOString();
+    return { start, end: new Date(new Date(start).getTime() + 1800000).toISOString(), slot: daySlots.find((s) => new Date(s.starts_at).getTime() === new Date(start).getTime()) };
+  }));
   const selected = slots.find((s) => s.id === slotId);
   if (state.bookingId)
     return (
@@ -35,7 +40,7 @@ export function BookingForm({
           {selected && time(selected.starts_at)} · 30 minutes · Malaysia time
         </p>
         <p>
-          Your host: {selected?.host}. Your host will use the contact details
+          Our team will use the contact details
           you provided to arrange arrival details.
         </p>
         <p>
@@ -87,8 +92,8 @@ export function BookingForm({
       </fieldset>
       <fieldset>
         <legend>{dayLabel(day)} · Choose a 30-minute time</legend>
-        <div className="slot-grid">
-          {daySlots.map((s) => (
+        <div className="slot-grid pooled-slot-grid">
+          {cells.map(({ start, end, slot: s }) => s ? (
             <label
               key={s.id}
               className={slotId === s.id ? "slot selected" : "slot"}
@@ -103,9 +108,12 @@ export function BookingForm({
               />
               <span>
                 {slotRange(s.starts_at, s.ends_at)}
-                <small>With {s.host}</small>
               </span>
             </label>
+          ) : (
+            <div key={start} className="slot unavailable" aria-disabled="true">
+              <span>{slotRange(start, end)}<small>Unavailable</small></span>
+            </div>
           ))}
         </div>
       </fieldset>

@@ -19,14 +19,14 @@ export default async function ViewingPage({
           <em>See your next home.</em>
         </h1>
         <p className="page-intro">
-          Book a viewing at Desa Aman with Edmund or Lisa. Pick an available
+          Book a viewing at Desa Aman. Pick an available
           time and we’ll confirm it immediately.
         </p>
         <div className="viewing-body">
           <aside className="visit-summary">
             <span className="eyebrow">YOUR FIRST LOOK</span>
             <h2>Desa Aman</h2>
-            <p>A relaxed, 30-minute visit with Edmund or Lisa.</p>
+            <p>A relaxed, 30-minute visit with our team.</p>
             <ul>
               <li>See the rooms in person</li>
               <li>Ask about rent and move-in timing</li>

@@ -15,7 +15,7 @@ export function HouseCard() {
         <h2>Desa Aman <ArrowUpRight aria-hidden="true" /></h2>
         <p className="location"><MapPin size={16} aria-hidden="true" /> Desa Aman · Landed home</p>
         <p>A family-run home, with a space to call your own. Explore the house, then find your room.</p>
-        <div className="house-facts"><span>6 rental rooms</span><span>2 floors</span><span>U1 in 3D</span></div>
+        <div className="house-facts"><span>6 rental rooms</span><span>2 floors</span><span>U1 & G2 in 3D</span></div>
         <span className="text-link">Explore the house <span aria-hidden="true">↗</span></span>
       </div>
     </Link>

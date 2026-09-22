@@ -1,6 +1,7 @@
 "use client";
 import { useActionState, useState } from "react";
 import Link from "next/link";
+import { malaysiaDate, slotRange, dayLabel } from "@/lib/viewing-times";
 import { bookViewing } from "./actions";
 type Slot = { id: string; starts_at: string; ends_at: string; host: string };
 const time = (d: string) =>
@@ -21,6 +22,9 @@ export function BookingForm({
 }) {
   const [state, action, pending] = useActionState(bookViewing, {});
   const [slotId, setSlotId] = useState("");
+  const dates = [...new Set(slots.map((s) => malaysiaDate(s.starts_at)))];
+  const [day, setDay] = useState(dates[0] || "");
+  const daySlots = slots.filter((s) => malaysiaDate(s.starts_at) === day);
   const selected = slots.find((s) => s.id === slotId);
   if (state.bookingId)
     return (
@@ -64,9 +68,27 @@ export function BookingForm({
         </select>
       </label>
       <fieldset>
-        <legend>Choose a 30-minute viewing · Malaysia time (UTC+8)</legend>
+        <legend>Choose a day · Malaysia time (UTC+8)</legend>
+        <div className="viewing-days" role="group" aria-label="Available dates">
+          {dates.map((date) => (
+            <button
+              type="button"
+              key={date}
+              aria-pressed={day === date}
+              onClick={() => {
+                setDay(date);
+                setSlotId("");
+              }}
+            >
+              {dayLabel(date)}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>{dayLabel(day)} · Choose a 30-minute time</legend>
         <div className="slot-grid">
-          {slots.map((s) => (
+          {daySlots.map((s) => (
             <label
               key={s.id}
               className={slotId === s.id ? "slot selected" : "slot"}
@@ -76,10 +98,11 @@ export function BookingForm({
                 name="slot"
                 value={s.id}
                 required
+                checked={slotId === s.id}
                 onChange={() => setSlotId(s.id)}
               />
               <span>
-                {time(s.starts_at)}
+                {slotRange(s.starts_at, s.ends_at)}
                 <small>With {s.host}</small>
               </span>
             </label>
@@ -112,10 +135,11 @@ export function BookingForm({
           />
         </label>
         <label>
-          Phone
+          WhatsApp number
           <input
             required
             type="tel"
+            placeholder="e.g. +60123456789"
             name="phone"
             autoComplete="tel"
             maxLength={30}
@@ -123,8 +147,8 @@ export function BookingForm({
         </label>
       </div>
       <p>
-        Both email and phone are required so our team can reach you about your
-        viewing. No account needed.
+        Both email and WhatsApp number are required so our team can reach you
+        about your viewing. No account needed.
       </p>
       <div hidden>
         <label>

@@ -35,3 +35,9 @@ Production build and lint must pass. Test anonymous bookings, private lead acces
 - Signed-in residents see My home, with their own active/past tenancies. Rent and meter integrations remain clearly pending; no payment or device controls are simulated.
 - Visitors book without an account. Both email and phone are required in the form, server action and booking transaction. Older enquiries with one contact are preserved. Confirmation is immediate on screen; outbound email/SMS is not configured yet.
 - Public Desa Aman content remains curated separately from operational property records.
+
+### Daily viewing availability
+
+Every staff member defaults to 09:00–17:00 Malaysia time, seven days a week, with sixteen 30-minute slots per day. Weekly hours can be edited or disabled, and date exceptions can override or restore weekly hours. The public picker groups by date and shows the host for each slot. Recurring slots roll forward for 30 calendar days; the existing one-hour notice period remains.
+
+Availability refresh and bookings share a transaction lock. Schedule edits affect new bookings only; confirmed appointments remain visible even outside revised hours. Admins can contact guests via email or WhatsApp to arrange changes; this release does not automatically send messages or move a confirmed appointment. Legacy manually published slots remain intact.

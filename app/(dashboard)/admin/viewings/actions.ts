@@ -2,48 +2,60 @@
 import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/lib/viewings";
 import { createServerSupabase } from "@/lib/supabase/server";
-export async function addSlot(_: { message: string }, form: FormData) {
+export async function saveAvailability(_: { message: string }, form: FormData) {
   const user = await requireStaff();
-  const value = String(form.get("starts") || "");
-  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:(00|30)$/.test(value))
-    return { message: "Choose a date and time on the hour or half hour." };
-  const starts = new Date(value + ":00+08:00");
+  const date = String(form.get("date") || "");
+  const range = (prefix: string) => ({
+    enabled: form.get(prefix + "enabled") === "on",
+    start: Number(form.get(prefix + "start")),
+    end: Number(form.get(prefix + "end")),
+  });
+  const valid = (r: { start: number; end: number }) =>
+    Number.isInteger(r.start) &&
+    Number.isInteger(r.end) &&
+    r.start >= 0 &&
+    r.end <= 1440 &&
+    r.start < r.end &&
+    r.start % 30 === 0 &&
+    r.end % 30 === 0;
+  const days = Array.from({ length: 7 }, (_, weekday) => ({
+    weekday,
+    ...range(`${weekday}-`),
+  }));
+  const override = range("override-");
+  const reset = form.get("reset") === "yes";
   if (
-    !Number.isFinite(starts.getTime()) ||
-    starts.getTime() < Date.now() + 3600000 ||
-    starts.getTime() > Date.now() + 90 * 86400000
+    date
+      ? !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
+        !Number.isFinite(new Date(date).getTime()) ||
+        (!reset && !valid(override))
+      : !days.every(valid)
   )
-    return { message: "Choose a time between one hour and 90 days from now." };
-  const { error } = await createServerSupabase()
-    .from("viewing_slots")
-    .insert({
-      host_id: user.id,
-      starts_at: starts.toISOString(),
-      ends_at: new Date(starts.getTime() + 1800000).toISOString(),
-    });
+    return {
+      message:
+        "Choose valid hours in 30-minute steps. End time must be later than start time.",
+    };
+  const { error } = await createServerSupabase().rpc(
+    "save_viewing_availability",
+    {
+      p_host: user.id,
+      p_days: date ? [] : days,
+      p_date: date || null,
+      p_override: date && !reset ? override : null,
+    },
+  );
+  if (error)
+    return { message: "Could not save availability. Please try again." };
   revalidatePath("/admin/viewings");
   revalidatePath("/viewing");
+  revalidatePath("/admin");
   return {
-    message: error
-      ? error.code === "23505"
-        ? "You already have a slot at that time."
-        : "Could not publish this slot."
-      : "Viewing time published.",
+    message: date
+      ? reset
+        ? "Date restored to weekly hours."
+        : "Date exception saved. Existing bookings are unchanged."
+      : "Weekly hours saved. Existing bookings are unchanged.",
   };
-}
-export async function closeSlot(form: FormData) {
-  const user = await requireStaff();
-  const db = createServerSupabase();
-  const id = String(form.get("id"));
-  // Closing removes new bookings; confirmed appointments remain visible and valid.
-  const { error } = await db
-    .from("viewing_slots")
-    .update({ is_open: false })
-    .eq("id", id)
-    .eq("host_id", user.id);
-  if (error) throw new Error("Could not close slot");
-  revalidatePath("/admin/viewings");
-  revalidatePath("/viewing");
 }
 export async function completeViewing(form: FormData) {
   await requireStaff();

@@ -22,7 +22,7 @@ User chose bank transfer/DuitNow with admin verification; no Stripe or card flow
 
 ## Next: prepaid utilities and Tuya
 
-User identifies controllers as Tuya (涂鸦). Need cloud project/API authorization, region, room/device mapping and documented supported switch commands. Secrets belong in server-only environment configuration. No device action is currently implemented. Keep a ledger of verified top-ups and measured consumption. An admin-only, explicit air-conditioner off command must report device acknowledgement or failure and keep an audit log. No automatic shutoff rule has been requested. Reconcile meter readings and balances before enabling any balance-triggered control.
+User confirms an existing Tuya (涂鸦) IoT platform project with eight smart meters connected to eight air-conditioners. All eight devices need explicit room mapping, including the two non-rental rooms; the public six-room inventory must not be assumed to cover every device. Need project/API authorization, region, device identifiers and documented supported switch commands. Secrets belong in server-only environment configuration. No device action is currently implemented. Keep a ledger of verified top-ups and measured consumption. An admin-only, explicit air-conditioner off command must report device acknowledgement or failure and keep an audit log. No automatic shutoff rule has been requested. Reconcile meter readings and balances before enabling any balance-triggered control.
 
 ## Verification
 

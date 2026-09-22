@@ -27,3 +27,11 @@ User confirms an existing Tuya (涂鸦) IoT platform project with eight smart me
 ## Verification
 
 Production build and lint must pass. Test anonymous bookings, private lead access, staff-only scheduling, concurrent slot claims, past/closed slots, rate limits, and preservation of staff roles on profile sync. Migration is in supabase/migrations; schema has RLS and no anonymous table access. Public booking is mediated by server actions and a service-role-only database function.
+
+## Role-aware experience (September 2026)
+
+- Staff share a sage-and-cream workspace for overview, leads, viewing availability and property records. Superadmins alone have Team & access. Tenancies remain secondary.
+- Browse as visitor opens the public site without signing staff out. A visible preview banner and Exit anonymous browsing return to `/admin`. This is presentation only: server authorization still protects all staff routes and actions.
+- Signed-in residents see My home, with their own active/past tenancies. Rent and meter integrations remain clearly pending; no payment or device controls are simulated.
+- Visitors book without an account. Both email and phone are required in the form, server action and booking transaction. Older enquiries with one contact are preserved. Confirmation is immediate on screen; outbound email/SMS is not configured yet.
+- Public Desa Aman content remains curated separately from operational property records.

@@ -32,18 +32,35 @@ export default async function Viewings() {
     >();
   if (error) throw new Error("Could not load viewings");
   return (
-    <main className="p-6 max-w-5xl mx-auto w-full">
-      <h1 className="text-3xl font-semibold">Viewings</h1>
+    <main className="workspace-page">
+      <span className="eyebrow">MAKE TIME FOR A FIRST HELLO</span>
+      <h1 className="workspace-title">Viewings</h1>
       <p className="mt-2">
         Publish your availability. Visitors book immediately without an account.
         All times are Malaysia time.
       </p>
-      <SlotForm />
+      <div className="schedule-layout">
+        <section className="workspace-panel">
+          <div className="panel-heading">
+            <h2>Your availability</h2>
+            <span className="status-pill">30-minute visits</span>
+          </div>
+          <SlotForm />
+        </section>
+      </div>
       <h2 className="text-xl font-semibold my-6">Team schedule</h2>
       <div className="space-y-4">
-        {!data?.length && <p>No viewing slots yet.</p>}
+        {!data?.length && (
+          <div className="workspace-panel workspace-empty">
+            <h3>A little availability goes a long way.</h3>
+            <p>
+              Publish your first slot above. It will appear on the public
+              booking page immediately.
+            </p>
+          </div>
+        )}
         {data?.map((s) => (
-          <section key={s.id} className="border rounded-xl p-5">
+          <section key={s.id} className="workspace-panel schedule-card">
             <h3 className="font-semibold">
               {viewingTime(s.starts_at)} · {s.users?.full_name}
             </h3>

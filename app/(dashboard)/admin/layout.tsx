@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getAppUser } from "@/lib/db/user";
-import { AdminSidebar } from "@/components/AdminSidebar";
+import { ManagementNav } from "@/components/ManagementNav";
 
 export default async function AdminLayout({
   children,
@@ -9,14 +9,15 @@ export default async function AdminLayout({
 }) {
   const user = await getAppUser();
   if (!user) redirect("/auth");
-  const hasAccess =
-    user.role === "admin" ||
-    user.role === "superadmin";
+  const hasAccess = user.role === "admin" || user.role === "superadmin";
   if (!hasAccess) redirect("/");
   return (
-    <div className="flex h-[calc(100vh-4rem)] overflow-hidden">
-      <AdminSidebar />
-      <div className="flex-1 overflow-auto">{children}</div>
+    <div className="management-shell">
+      <ManagementNav
+        superadmin={user.role === "superadmin"}
+        name={user.full_name || "Admin"}
+      />
+      <div className="management-content">{children}</div>
     </div>
   );
 }

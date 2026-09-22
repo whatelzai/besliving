@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 
@@ -14,7 +15,7 @@ export type AppUser = {
  * Get current app user from Supabase (synced from Clerk).
  * Returns null if not signed in or user not yet synced.
  */
-export async function getAppUser(): Promise<AppUser | null> {
+export const getAppUser = cache(async (): Promise<AppUser | null> => {
   const { userId } = await auth();
   if (!userId) return null;
 
@@ -26,4 +27,4 @@ export async function getAppUser(): Promise<AppUser | null> {
     .single();
 
   return data as AppUser | null;
-}
+});

@@ -20,18 +20,22 @@ export async function bookViewing(
   if (
     name.length < 1 ||
     name.length > 100 ||
-    (!email && !phone) ||
+    !email ||
+    !phone ||
     email.length > 254 ||
     phone.length > 30 ||
     !form.get("consent")
   )
     return {
       error:
-        "Enter your name, email or phone, and consent to being contacted about your viewing.",
+        "Enter your name, email and phone, and consent to being contacted about your viewing.",
     };
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     return { error: "Enter a valid email address." };
-  if (phone && !/^\+?[\d ()-]{7,30}$/.test(phone))
+  if (
+    phone &&
+    (!/^\+?[\d ()-]{7,30}$/.test(phone) || phone.replace(/\D/g, "").length < 7)
+  )
     return { error: "Enter a valid phone number." };
   if (!/^[0-9a-f-]{36}$/i.test(slot) || !isRentalRoom(room))
     return { error: "Choose a room and available time." };

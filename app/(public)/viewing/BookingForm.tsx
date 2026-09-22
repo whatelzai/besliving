@@ -48,6 +48,13 @@ export function BookingForm({
     );
   return (
     <form action={action} className="booking-form">
+      <div className="booking-step">
+        <span>01</span>
+        <div>
+          <h2>Your visit</h2>
+          <p>A little time to see if it feels like home.</p>
+        </div>
+      </div>
       <label>
         Room
         <select name="room" defaultValue={initialRoom}>
@@ -79,6 +86,16 @@ export function BookingForm({
           ))}
         </div>
       </fieldset>
+      <div className="booking-step">
+        <span>02</span>
+        <div>
+          <h2>Let’s stay in touch</h2>
+          <p>
+            We’ll use these details to arrange your arrival and follow up about
+            the viewing.
+          </p>
+        </div>
+      </div>
       <label>
         Your name
         <input name="name" autoComplete="name" required maxLength={100} />
@@ -87,6 +104,7 @@ export function BookingForm({
         <label>
           Email
           <input
+            required
             type="email"
             name="email"
             autoComplete="email"
@@ -95,10 +113,19 @@ export function BookingForm({
         </label>
         <label>
           Phone
-          <input type="tel" name="phone" autoComplete="tel" maxLength={30} />
+          <input
+            required
+            type="tel"
+            name="phone"
+            autoComplete="tel"
+            maxLength={30}
+          />
         </label>
       </div>
-      <p>Provide at least one contact method. No account needed.</p>
+      <p>
+        Both email and phone are required so our team can reach you about your
+        viewing. No account needed.
+      </p>
       <div hidden>
         <label>
           Website

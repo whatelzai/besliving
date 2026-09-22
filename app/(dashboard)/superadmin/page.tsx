@@ -1,53 +1,69 @@
 import { createServerSupabase } from "@/lib/supabase/server";
-
-export default async function SuperadminPage() {
-  const supabase = createServerSupabase();
-  const { data: admins } = await supabase
+import { getAppUser } from "@/lib/db/user";
+import { redirect } from "next/navigation";
+import { ShieldCheck, Users } from "lucide-react";
+export default async function Team() {
+  const user = await getAppUser();
+  if (user?.role !== "superadmin") redirect("/admin");
+  const { data, error } = await createServerSupabase()
     .from("users")
-    .select("id, full_name, email, role")
+    .select("id,full_name,email,role")
     .in("role", ["admin", "superadmin"])
-    .order("created_at", { ascending: false });
-
+    .order("created_at");
+  if (error) throw new Error("Could not load team");
   return (
-    <main className="min-h-full bg-[#fefefe]">
-      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="rounded-xl border border-[#e9e3f5] bg-white p-6">
-          <h2 className="font-semibold text-[#8b6cb8]">Admins & superadmins</h2>
-          {!admins?.length ? (
-            <p className="mt-4 text-[#6b7280]">No admins yet.</p>
-          ) : (
-            <ul className="mt-4 space-y-3">
-              {(admins ?? []).map((a) => (
-                <li
-                  key={a.id}
-                  className="flex items-center justify-between rounded-lg border border-[#e9e3f5] px-4 py-3"
-                >
-                  <div>
-                    <span className="font-medium text-[#1f2937]">
-                      {a.full_name || a.email || "Unknown"}
-                    </span>
-                    <span
-                      className={`ml-2 rounded-full px-2 py-0.5 text-xs ${
-                        a.role === "superadmin"
-                          ? "bg-[#b19cd9] text-white"
-                          : "bg-[#fef3c7] text-[#d4a017]"
-                      }`}
-                    >
-                      {a.role}
-                    </span>
-                  </div>
-
-                </li>
-              ))}
-            </ul>
-          )}
+    <main className="workspace-page">
+      <div className="workspace-heading">
+        <div>
+          <span className="eyebrow">A SMALL TEAM. A SHARED HOME.</span>
+          <h1>Team & access</h1>
+          <p>The people looking after Besliving, and what they can manage.</p>
         </div>
-
-        <p className="mt-6 text-sm text-[#6b7280]">
-          Role changes are managed in the database. To promote a user to admin,
-          update their <code className="rounded bg-[#e9e3f5] px-1">role</code> in
-          the <code className="rounded bg-[#e9e3f5] px-1">users</code> table.
-        </p>
+        <span className="status-pill">
+          <ShieldCheck size={15} />
+          Superadmin only
+        </span>
+      </div>
+      <section className="workspace-panel">
+        <div className="panel-heading">
+          <h2>Your team</h2>
+          <span>{data?.length || 0} members</span>
+        </div>
+        {data?.map((a) => (
+          <div className="team-row" key={a.id}>
+            <span className="person-avatar">
+              {(a.full_name || "?").charAt(0)}
+            </span>
+            <div>
+              <h3>
+                {a.full_name || a.email}
+                {a.id === user.id && <small> · You</small>}
+              </h3>
+              <p>{a.email}</p>
+            </div>
+            <span className="status-pill">
+              {a.role === "superadmin" ? "Superadmin" : "Admin"}
+            </span>
+          </div>
+        ))}
+      </section>
+      <div className="workspace-columns">
+        <section className="workspace-panel role-explainer">
+          <ShieldCheck />
+          <h2>Superadmin</h2>
+          <p>
+            Oversees the team, access and configuration, alongside day-to-day
+            home management.
+          </p>
+        </section>
+        <section className="workspace-panel role-explainer">
+          <Users />
+          <h2>Admin</h2>
+          <p>
+            Looks after leads, publishes viewing availability, and manages
+            properties and tenancies.
+          </p>
+        </section>
       </div>
     </main>
   );

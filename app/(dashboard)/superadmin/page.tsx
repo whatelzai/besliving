@@ -1,9 +1,6 @@
-import { getAppUser } from "@/lib/db/user";
 import { createServerSupabase } from "@/lib/supabase/server";
-import Link from "next/link";
 
 export default async function SuperadminPage() {
-  const user = await getAppUser();
   const supabase = createServerSupabase();
   const { data: admins } = await supabase
     .from("users")
@@ -39,14 +36,7 @@ export default async function SuperadminPage() {
                       {a.role}
                     </span>
                   </div>
-                  {a.id !== user?.id && a.role === "admin" && (
-                    <Link
-                      href={`/superadmin/admins/${a.id}`}
-                      className="text-sm font-medium text-[#2ec4b6] hover:underline"
-                    >
-                      Edit permissions
-                    </Link>
-                  )}
+
                 </li>
               ))}
             </ul>

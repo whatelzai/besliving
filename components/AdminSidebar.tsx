@@ -7,16 +7,16 @@ import {
   ClipboardList,
   Building2,
   FileCheck,
-  Palette,
+  CalendarDays,
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react";
 
 const adminLinks = [
-  { href: "/admin/waitlist", label: "Waitlist", icon: ClipboardList },
+  { href: "/admin/leads", label: "Leads", icon: ClipboardList },
+  { href: "/admin/viewings", label: "Viewings", icon: CalendarDays },
   { href: "/admin/units", label: "Units", icon: Building2 },
-  { href: "/admin/tenancies", label: "Tenancies", icon: FileCheck },
-  { href: "/admin/design-system", label: "Design System", icon: Palette },
+  { href: "/admin/tenancies", label: "Tenancies (later)", icon: FileCheck },
 ];
 
 const STORAGE_KEY = "admin-sidebar-collapsed";

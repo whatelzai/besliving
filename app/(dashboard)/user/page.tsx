@@ -44,10 +44,12 @@ export default async function UserDashboardPage() {
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold text-[#1f2937]">My dashboard</h1>
         <p className="mt-1 text-[#6b7280]">
-          Your tenancies and waitlist
+          Manage your profile and tenancy
         </p>
 
         <div className="mt-8 space-y-8">
+          <p>To change your display name, open your profile avatar and choose Manage account. Your chosen name takes precedence over your email.</p>
+          {["admin", "superadmin"].includes(user.role) && <Link href="/admin" className="living-button">Manage leads and viewings</Link>}
           <Card>
             <CardHeader>
               <CardTitle>Active tenancy</CardTitle>
@@ -60,7 +62,7 @@ export default async function UserDashboardPage() {
             <CardContent>
               {!activeTenancies.length ? (
                 <p className="text-[#6b7280]">
-                  Browse units and join waitlists to get notified when rooms open.
+                  Book a viewing to find a room that suits you.
                 </p>
               ) : (
                 <ul className="space-y-3">

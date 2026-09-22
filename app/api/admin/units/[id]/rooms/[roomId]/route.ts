@@ -26,9 +26,12 @@ export async function PATCH(
   const supabase = createServerSupabase();
   const updates: Record<string, unknown> = {};
   if (name != null) updates.name = name;
-  if (price != null) updates.price = Number(price);
+  if (price !== undefined) {
+    if (price !== null && (!Number.isFinite(Number(price)) || Number(price) < 0)) return NextResponse.json({error: "Invalid rent"}, {status:400});
+    updates.price = price === null ? null : Number(price);
+  }
   if (size_sqm !== undefined) updates.size_sqm = size_sqm ? Number(size_sqm) : null;
-  if (availability_status != null) updates.availability_status = availability_status;
+  if (availability_status !== undefined) updates.availability_status = availability_status;
 
   const { data, error } = await supabase
     .from("rooms")

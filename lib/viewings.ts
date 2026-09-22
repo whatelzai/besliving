@@ -47,7 +47,7 @@ export async function availableSlots() {
     all.push(...(data || []));
     if (!data || data.length < 1000) break;
   }
-  return all
+  const available = all
     .filter(
       (s) =>
         ["admin", "superadmin"].includes(s.users.role) &&
@@ -57,8 +57,8 @@ export async function availableSlots() {
       id: s.id,
       starts_at: s.starts_at,
       ends_at: s.ends_at,
-      host: s.users.full_name || "Besliving host",
     }));
+  return [...new Map(available.map((slot) => [slot.starts_at, slot])).values()];
 }
 export function viewingTime(date: string) {
   return new Intl.DateTimeFormat("en-MY", {

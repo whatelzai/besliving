@@ -50,7 +50,7 @@ export async function bookViewing(
   const hash = createHmac("sha256", process.env.CLERK_SECRET_KEY!)
     .update(identity)
     .digest("hex");
-  const { data, error } = await createServerSupabase().rpc("book_viewing", {
+  const { data, error } = await createServerSupabase().rpc("book_available_viewing", {
     p_slot: slot,
     p_name: name,
     p_email: email || null,

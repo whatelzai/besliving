@@ -30,6 +30,7 @@ export async function availableSlots() {
       .gt("starts_at", new Date(Date.now() + 3600000).toISOString())
       .lt("starts_at", new Date(Date.now() + 90 * 86400000).toISOString())
       .order("starts_at")
+      .order("id")
       .range(offset, offset + 999)
       .returns<
         {

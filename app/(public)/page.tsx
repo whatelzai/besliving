@@ -1,37 +1,21 @@
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight, Box, Heart, House } from "lucide-react";
+import { Localized, Text } from "@/components/preferences/Localized";
+import Image from "@/components/preferences/LocalizedImage";
+import Link from "@/components/preferences/LocalizedLink";
+import { ArrowUpRight } from "lucide-react";
 import { HouseCard } from "@/components/HouseCard";
-import { u1Photos } from "@/lib/catalogue/desa-aman";
-
+import { HomeMotion } from "@/components/HomeMotion";
+import { u1Photos, g2Photos } from "@/lib/catalogue/desa-aman";
 export default function Home() {
-  return (
-    <main className="living-page">
-      <section className="home-hero living-container">
-        <div className="hero-copy">
-          <span className="eyebrow"><span className="status-dot" /> SMALL COMMUNITY. MORE HOME.</span>
-          <h1>Your own space.<br /><em>A place to belong.</em></h1>
-          <p>Thoughtfully furnished rooms in a family-run home. A little more comfort, a little more care. Welcome to BesLiving.</p>
-          <Link className="living-button" href="/catalogue">Find your room <ArrowUpRight size={18} /></Link>
-          <div className="hero-footnote"><House size={18} aria-hidden="true" /><span>One home in Desa Aman.<br /><strong>Six rooms. A personal touch.</strong></span></div>
-        </div>
-        <div className="hero-photo">
-          <Image src={u1Photos[0].src} alt={u1Photos[0].alt} fill priority sizes="(max-width: 760px) 100vw, 55vw" className="object-cover" />
-          <div className="hero-photo-caption"><span>MEET YOUR NEXT SPACE<strong>U1 · Desa Aman</strong></span><Link href="/units/desa-aman/rooms/u1" aria-label="Explore room U1 in 3D"><ArrowUpRight size={26} /></Link></div>
-          <span className="hero-stamp"><Box size={17} aria-hidden="true" /> Explore U1 in 3D</span>
-        </div>
-      </section>
-      <div className="home-values"><span><Heart size={17} /> Family owned & managed</span><span><House size={17} /> A room of your own</span><span><Box size={17} /> Get a feel for the space</span></div>
-      <section className="living-container home-houses">
-        <div className="section-heading"><div><span className="eyebrow">FIND YOUR PLACE</span><h2>Good living starts at home.</h2></div><Link className="text-link" href="/catalogue">Our homes <ArrowUpRight size={18} /></Link></div>
-        <HouseCard />
-      </section>
-      <section className="living-container how-it-works"><span className="eyebrow">MAKE YOURSELF AT HOME</span><h2>A closer look before you move.</h2><div className="steps">{[
-        ["01", "Choose a home", "Start with the house and get to know the place."],
-        ["02", "Explore your room", "Browse the photos and rotate U1’s 3D layout at your own pace."],
-        ["03", "Make it yours", "Confirm rent and availability with our family before arranging your move."],
-      ].map(([n, title, description]) => <article key={n}><span>{n}</span><h3>{title}</h3><p>{description}</p></article>)}</div></section>
-      <footer className="living-footer"><Link href="/">BesLiving<span>Room to be you.</span></Link><p>Family-run co-living · Desa Aman</p><Link href="/about">Our story ↗</Link></footer>
-    </main>
-  );
+    return <main className="living-page"><HomeMotion>
+    <section className="home-hero living-container">
+      <div className="hero-copy"><h1><Text>Your own space.</Text><br /><em><Text>A place to belong.</Text></em></h1><p><Text>Thoughtfully furnished rooms in a family-run home. A little more comfort, a little more care. Welcome to BesLiving.</Text></p><div className="hero-actions"><Link className="living-button" href="/catalogue"><Text>Find your room </Text><ArrowUpRight size={18}/></Link><Link className="text-link" href="/viewing"><Text>Book a viewing </Text><ArrowUpRight size={18}/></Link></div></div>
+      <div className="hero-photo"><Image src={u1Photos[0].src} alt={u1Photos[0].alt} fill priority sizes="(max-width: 760px) 100vw, 55vw" className="object-cover"/><div className="hero-photo-caption"><span><Text>MEET YOUR NEXT SPACE</Text><strong translate="no">U1 · Desa Aman</strong></span><Link href="/units/desa-aman/rooms/u1" aria-label="Explore room U1 in 3D"><ArrowUpRight size={26}/></Link></div></div>
+    </section>
+    <div className="ambient-line"><div><Localized>{[0, 1].map(i => <span key={i} aria-hidden={i === 1 ? true : undefined} className="flex gap-10"><span><Text>Family owned & managed</Text></span><span><Text>A room of your own</Text></span><span><Text>Explore before you move</Text></span><span><Text>Desa Aman</Text></span><span><Text>Room to be you.</Text></span></span>)}</Localized></div></div>
+    <section className="living-container home-houses"><div className="section-heading"><h2><Text>Good living starts at home.</Text></h2><Link className="text-link" href="/catalogue"><Text>Our homes </Text><ArrowUpRight size={18}/></Link></div><div className="motion-image"><HouseCard /></div></section>
+    <section className="living-container room-discovery"><h2 className="discovery-heading"><Text>Find your corner.</Text><span className="inline-room-image"><Image src={g2Photos[0].src} alt="" width={110} height={62} sizes="110px" className="h-full w-full object-cover"/></span></h2><p><Text>Two rooms to explore, right down to the details.</Text></p><div className="room-accordion"><Localized>{[{ name: 'U1', photo: u1Photos[0], copy: 'A bright room with a dedicated study corner.' }, { name: 'G2', photo: g2Photos[0], copy: 'A cosy ground-floor room with a tucked-away workspace.' }].map(room => <details key={room.name} open><summary><span translate="no">{room.name}</span> <span><Text>· Photos & 3D tour</Text></span></summary><div className="accordion-image"><Image src={room.photo.src} alt={room.photo.alt} fill sizes="(max-width: 760px) 100vw, 50vw" className="object-cover"/></div><p><Localized>{room.copy}</Localized></p><Link className="text-link" href={`/units/desa-aman/rooms/${room.name.toLowerCase()}`}><Text>Explore the room </Text><ArrowUpRight size={16}/></Link></details>)}</Localized></div></section>
+    <section className="living-container how-it-works"><p className="story-statement"><span><Text>A home is more than a room.</Text></span><Localized>{' '}</Localized><span><Text>It’s a place to settle in, find your rhythm, and feel looked after.</Text></span></p><h2><Text>A closer look before you move.</Text></h2><div className="steps"><Localized>{[["01", "Choose a home", "Start with the house and get to know the place."], ["02", "Explore your room", "Browse the photos and rotate the 3D layouts at your own pace."], ["03", "Make it yours", "Confirm rent and availability with our family before arranging your move."]].map(([n, title, description]) => <article key={n}><span><Localized>{n}</Localized></span><h3><Localized>{title}</Localized></h3><p><Localized>{description}</Localized></p></article>)}</Localized></div></section>
+    <section className="living-container home-cta"><h2><Text>Come see how it feels.</Text></h2><p><Text>A little time in the space makes all the difference. Choose a viewing time and meet us at Desa Aman.</Text></p><Link className="living-button" href="/viewing"><Text>Book a viewing </Text><ArrowUpRight size={18}/></Link></section>
+    <footer className="living-footer"><Link href="/"><Text>BesLiving</Text><span><Text>Room to be you.</Text></span></Link><p><Text>Family-run co-living · Desa Aman</Text></p><Link href="/about"><Text>Our story ↗</Text></Link></footer>
+  </HomeMotion></main>;
 }

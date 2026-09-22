@@ -29,3 +29,46 @@ export const u1Photos = [
 export function isRentalRoom(name: string) {
   return desaAman.rentalRooms.includes(name.toUpperCase());
 }
+
+export const g2Photos = [
+  {
+    "file": "114409",
+    "alt": "G2 queen bed, recessed study nook and mirrored entrance door"
+  },
+  {
+    "file": "112508",
+    "alt": "G2 bed beneath the warm curved wall light"
+  },
+  {
+    "file": "114517",
+    "alt": "Bed and wooden wardrobe beside full-width grey curtains"
+  },
+  {
+    "file": "114528",
+    "alt": "Study nook with desk and chair beside its own window"
+  },
+  {
+    "file": "114420",
+    "alt": "Wardrobe and entrance viewed across the bed"
+  },
+  {
+    "file": "114449",
+    "alt": "Upholstered headboard and grey bed throw in daylight"
+  },
+  {
+    "file": "112611",
+    "alt": "Warm lighting over the bed and wardrobe"
+  },
+  {
+    "file": "114537",
+    "alt": "Window-side workspace with a wooden desk and white chair"
+  },
+  {
+    "file": "114430",
+    "alt": "Bed accessories and study nook in daylight"
+  },
+  {
+    "file": "114628",
+    "alt": "Queen bed and wardrobe viewed from above"
+  }
+].map(photo => ({ ...photo, src: `/images/desa-aman/g2/${photo.file}.webp` }));

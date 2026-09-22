@@ -22,8 +22,8 @@ export async function POST(
   const { id: unitId } = await params;
   const body = await req.json();
   const { name, price, size_sqm, availability_status } = body;
-  if (!name || price == null)
-    return NextResponse.json({ error: "name, price required" }, { status: 400 });
+  if (!name || (price != null && (!Number.isFinite(Number(price)) || Number(price) < 0)))
+    return NextResponse.json({ error: "Valid room name and nonnegative rent required" }, { status: 400 });
 
   const supabase = createServerSupabase();
   const { data, error } = await supabase
@@ -31,9 +31,9 @@ export async function POST(
     .insert({
       unit_id: unitId,
       name,
-      price: Number(price),
+      price: price == null ? null : Number(price),
       size_sqm: size_sqm != null ? Number(size_sqm) : null,
-      availability_status: availability_status ?? "available",
+      availability_status: availability_status ?? null,
     })
     .select("id, name, price, size_sqm, availability_status")
     .single();

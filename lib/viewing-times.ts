@@ -7,27 +7,28 @@ export const weekdays = [
   "Friday",
   "Saturday",
 ];
-export function minuteLabel(minute: number) {
-  if (minute === 1440) return "12:00 am (next day)";
-  const hour = Math.floor(minute / 60);
-  return `${hour % 12 || 12}:${String(minute % 60).padStart(2, "0")} ${hour < 12 ? "am" : "pm"}`;
+export function minuteLabel(minute: number, locale = "en-MY") {
+  const date = new Date(Date.UTC(2026,0,1,Math.floor(minute/60),minute%60));
+  const label = new Intl.DateTimeFormat(locale, {timeZone:"UTC",hour:"numeric",minute:"2-digit"}).format(date);
+  return label + (minute === 1440 ? (locale.startsWith('zh') ? '（次日）' : locale.startsWith('ms') ? ' (hari berikutnya)' : ' (next day)') : '');
 }
 export function malaysiaDate(value: string) {
   return new Date(new Date(value).getTime() + 8 * 3600000)
     .toISOString()
     .slice(0, 10);
 }
-export function slotRange(start: string, end: string) {
+export function slotRange(start: string, end: string, locale = "en-MY") {
   const format = (v: string) =>
-    new Intl.DateTimeFormat("en-MY", {
+    new Intl.DateTimeFormat(locale, {
       timeZone: "Asia/Kuala_Lumpur",
       hour: "numeric",
       minute: "2-digit",
     }).format(new Date(v));
   return `${format(start)} – ${format(end)}`;
 }
-export function dayLabel(date: string) {
-  return new Intl.DateTimeFormat("en-MY", {
+export function dayLabel(date: string, locale = "en-MY") {
+  if (!date) return "";
+  return new Intl.DateTimeFormat(locale, {
     timeZone: "Asia/Kuala_Lumpur",
     weekday: "short",
     day: "numeric",

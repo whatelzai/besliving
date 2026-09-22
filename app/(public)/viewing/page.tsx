@@ -1,70 +1,58 @@
+import { Localized, Text } from "@/components/preferences/Localized";
 import { availableSlots } from "@/lib/viewings";
 import { BookingForm } from "./BookingForm";
-import Link from "next/link";
+import Link from "@/components/preferences/LocalizedLink";
 export const dynamic = "force-dynamic";
-export default async function ViewingPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ room?: string }>;
+export default async function ViewingPage({ searchParams, }: {
+    searchParams: Promise<{
+        room?: string;
+    }>;
 }) {
-  const { room } = await searchParams;
-  const slots = await availableSlots();
-  return (
-    <main className="living-page">
+    const { room } = await searchParams;
+    const slots = await availableSlots();
+    return (<main className="living-page">
       <div className="living-container room-detail viewing-layout">
-        <span className="eyebrow">COME SAY HELLO</span>
-        <h1>
+        <span className="eyebrow"><Text>COME SAY HELLO</Text></span>
+        <h1><Text>
           Find a time.
-          <br />
-          <em>See your next home.</em>
+          </Text><br />
+          <em><Text>See your next home.</Text></em>
         </h1>
-        <p className="page-intro">
+        <p className="page-intro"><Text>
           Book a viewing at Desa Aman. Pick an available
           time and we’ll confirm it immediately.
-        </p>
+        </Text></p>
         <div className="viewing-body">
           <aside className="visit-summary">
-            <span className="eyebrow">YOUR FIRST LOOK</span>
-            <h2>Desa Aman</h2>
-            <p>A relaxed, 30-minute visit with our team.</p>
+            <span className="eyebrow"><Text>YOUR FIRST LOOK</Text></span>
+            <h2><Text>Desa Aman</Text></h2>
+            <p><Text>A relaxed, 30-minute visit with our team.</Text></p>
             <ul>
-              <li>See the rooms in person</li>
-              <li>Ask about rent and move-in timing</li>
-              <li>Get a feel for the home</li>
+              <li><Text>See the rooms in person</Text></li>
+              <li><Text>Ask about rent and move-in timing</Text></li>
+              <li><Text>Get a feel for the home</Text></li>
             </ul>
-            <small>
+            <small><Text>
               Malaysia time · UTC+8
-              <br />
+              </Text><br /><Text>
               No account or payment needed
-            </small>
+            </Text></small>
           </aside>
           <div>
-            {slots.length ? (
-              <BookingForm
-                slots={slots}
-                initialRoom={
-                  ["U1", "U2", "U3", "G2", "G3", "G4"].includes(
-                    room?.toUpperCase() || "",
-                  )
-                    ? room!.toUpperCase()
-                    : "U1"
-                }
-              />
-            ) : (
-              <section className="availability-card">
-                <h2>New viewing times are on their way.</h2>
-                <p>
+            <Localized>{slots.length ? (<BookingForm slots={slots} initialRoom={["U1", "U2", "U3", "G2", "G3", "G4"].includes(room?.toUpperCase() || "")
+                ? room!.toUpperCase()
+                : "U1"}/>) : (<section className="availability-card">
+                <h2><Text>New viewing times are on their way.</Text></h2>
+                <p><Text>
                   Our hosts haven’t published any available times yet. Please
                   check back soon.
-                </p>
-                <Link href="/units/desa-aman" className="living-button">
+                </Text></p>
+                <Link href="/units/desa-aman" className="living-button"><Text>
                   Explore the house
-                </Link>
-              </section>
-            )}
+                </Text></Link>
+              </section>)}</Localized>
           </div>
         </div>
       </div>
-    </main>
-  );
+    </main>);
 }

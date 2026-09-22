@@ -13,8 +13,10 @@ export default async function AdminPage() {
     db
       .from("viewing_slots")
       .select(
-        "id,starts_at,users(full_name),viewing_bookings(id,status,leads(name))",
+        "id,starts_at,users(full_name),viewing_bookings!inner(id,status,leads(name))",
+        { count: "exact" },
       )
+      .eq("viewing_bookings.status", "confirmed")
       .gt("starts_at", new Date().toISOString())
       .order("starts_at")
       .limit(100)
@@ -51,7 +53,7 @@ export default async function AdminPage() {
           <p>A clear view of the people finding their next home.</p>
         </div>
         <Link className="living-button" href="/admin/viewings">
-          Publish viewing times <ArrowUpRight size={16} />
+          Edit viewing hours <ArrowUpRight size={16} />
         </Link>
       </div>
       <div className="metric-grid">
@@ -64,7 +66,7 @@ export default async function AdminPage() {
         <Link href="/admin/viewings" className="metric-card">
           <CalendarDays />
           <span>Upcoming viewings</span>
-          <strong>{upcoming.length}</strong>
+          <strong>{slots.count || 0}</strong>
           <small>Confirmed visits ahead</small>
         </Link>
         <Link href="/admin/tenancies" className="metric-card">
@@ -100,11 +102,11 @@ export default async function AdminPage() {
               <Clock3 />
               <h3>Room for a first hello.</h3>
               <p>
-                Publish the times you’re available. Visitors can book a
-                30-minute viewing straight from the website.
+                Your daily hours are available for booking. Visitors can choose
+                a 30-minute viewing straight from the website.
               </p>
               <Link href="/admin/viewings" className="text-link">
-                Set your availability ↗
+                Edit your availability ↗
               </Link>
             </div>
           )}
